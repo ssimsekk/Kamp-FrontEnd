@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators } from "@angular/forms";
+import {FormGroup,FormBuilder, FormControl, Validators} from "@angular/forms"
 import { ToastrService } from 'ngx-toastr';
 import { ProductService } from 'src/app/services/product.service';
 
@@ -12,40 +12,40 @@ import { ProductService } from 'src/app/services/product.service';
 export class ProductAddComponent implements OnInit {
 
   productAddForm : FormGroup;
-  constructor(private formBuilder:FormBuilder, private productService:ProductService, 
-    private toastrService:ToastrService) { }
+  constructor(private formBuilder:FormBuilder, 
+    private productService:ProductService, private toastrService:ToastrService) { }
 
   ngOnInit(): void {
+    this.createProductAddForm();
   }
 
   createProductAddForm(){
-    this.productAddForm = this.formBuilder.group({
-      productName: ["", Validators.required],
-      unitPrice: ["", Validators.required],
-      unitsInStock: ["", Validators.required],
-      categoryId: ["", Validators.required]
-    });
+     this.productAddForm = this.formBuilder.group({
+       productName:["",Validators.required],
+       unitPrice: ["",Validators.required],
+       unitsInStock:["", Validators.required],
+       categoryId:["",Validators.required]
+     })
   }
 
   add(){
     if(this.productAddForm.valid){
-      let productModel = Object.assign({}, this.productAddForm.value)
+      let productModel = Object.assign({},this.productAddForm.value)
       this.productService.add(productModel).subscribe(response=>{
-        
-        this.toastrService.success(response.message,"Başarılı!")
+        this.toastrService.success(response.message,"Başarılı")
       },responseError=>{
-        if(responseError.error.Errors.lenght>0){
-          for (let i = 0; i < responseError.error.Errors.length; i++) {
-            this.toastrService.error(responseError.error.Errors[i].ErrorMessage,"Doğrulama Hatası")
-            
-          }
-          
-        }
-        
+        if(responseError.error.Errors.length>0){
+          for (let i = 0; i <responseError.error.Errors.length; i++) {
+            this.toastrService.error(responseError.error.Errors[i].ErrorMessage
+              ,"Doğrulama hatası")
+          }       
+        } 
       })
+      
     }else{
-      this.toastrService.error("Formunuz Eksik","Dikkat!")
+      this.toastrService.error("Formunuz eksik","Dikkat")
     }
+    
   }
 
 }
